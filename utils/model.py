@@ -1,5 +1,7 @@
-from pyomo.environ import *
+import numpy as np
+from .data import intercept_bounds, slope_bounds
 
+from pyomo.environ import *
 
 def getx_rule(data):
     def getx(_, i):
@@ -11,6 +13,13 @@ def gety_rule(data):
     def gety(_, i):
         return data[i - 1, 1]
     return gety
+
+
+def getM1_rule(data):
+    intercepts, slopes = np.array(intercept_bounds(data)), np.array(slope_bounds(data))
+    def getM1(model, i):
+       return np.max(np.abs(model.Y[i] - slopes * model.X[i] + intercepts))
+    return getM1
 
 
 def init_model(data):
