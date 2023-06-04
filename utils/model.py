@@ -22,6 +22,13 @@ def getM1_rule(data):
     return getM1
 
 
+def getM2_rule(data):
+    intercepts, slopes = np.array(intercept_bounds(data)), np.array(slope_bounds(data))
+    def getM2(model, i):
+       return intercepts[1] - intercepts[0] - model.X[i] * (slopes[0] - slopes[1])
+    return getM2
+
+
 def init_model(data):
     model = ConcreteModel()
     model.n = Param(initialize=data.shape[0])
