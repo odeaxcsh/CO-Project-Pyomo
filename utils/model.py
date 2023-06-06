@@ -18,7 +18,7 @@ def gety_rule(data):
 def getM1_rule(data):
     intercepts, slopes = np.array(intercept_bounds(data)), np.array(slope_bounds(data))
     def getM1(model, i):
-       return np.max(np.abs(model.Y[i] - slopes * model.X[i] + intercepts))
+       return np.max(np.abs(model.Y[i] - slopes[:, None] * model.X[i] + intercepts[None, :]))
     return getM1
 
 
